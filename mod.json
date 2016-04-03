@@ -1,0 +1,17 @@
+{
+	"name": "Argus",
+	"description": "Adds a new item called Argus into the game.",
+	"version": "1.0.0",
+	"author": "Spacetech",
+	"hooks": [
+		"OnGameStart",
+		"OnKeyBindPress"
+	],
+	"compatible_minor_versions": [
+		0
+	],
+	"files": [
+		"argus.js"
+	],
+	"publishedFileId": "474819457"
+}
