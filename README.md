@@ -17,7 +17,7 @@ Open the folder in Visual Studio Code and build with Ctrl+Shift+B.
 [http://steamcommunity.com/sharedfiles/filedetails/?id=474819457](http://steamcommunity.com/sharedfiles/filedetails/?id=474819457)
 
 ## Screenshots
-![Argus](http://images.akamai.steamusercontent.com/ugc/312243066448012353/4629FF4FA7663D37F3519C90FA4A2F34E0DF3E63/ "Argus")
+![Argus](https://raw.githubusercontent.com/WaywardGame/argus/master/mod.png "Argus")
 
 ![Screenshot #1](http://images.akamai.steamusercontent.com/ugc/312243491181373202/B4E32A32A75F130D744B61489C3C44D70A3BB311/ "Screenshot #1")
 
