@@ -8,7 +8,7 @@ class Mod extends Mods.Mod {
 	}
 
 	public onLoad(): void {
-		var actionType = this.addActionType("See All!", "Let's you see everything", (item: Item.IItem) => {
+		let actionType = this.addActionType("See All!", "Let's you see everything", (item: Item.IItem) => {
 			game.options.zoomLevel = 12;
 			game.setZoomLevel();
 		});
@@ -25,13 +25,14 @@ class Mod extends Mods.Mod {
 			use: [actionType],
 			recipe: {
 				components: [
-					[ItemTypeGroup.Sharpened, 1, 0],
-					[ItemType.Lens, 2, 2, 2],
-					[ItemType.Log, 1, 1, 1],
-					[ItemType.String, 1, 1, 1]
+					Item.RecipeComponent(ItemTypeGroup.Sharpened, 1, 0),
+					Item.RecipeComponent(ItemType.Lens, 2, 2, 2),
+					Item.RecipeComponent(ItemType.Log, 1, 1, 1),
+					Item.RecipeComponent(ItemType.String, 1, 1, 1)
 				],
 				skill: SkillType.Tinkering,
-				level: RecipeLevel.Advanced
+				level: RecipeLevel.Advanced,
+				malignity: 10
 			},
 			disassemble: true,
 			durability: 500
