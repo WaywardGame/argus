@@ -5,8 +5,9 @@ define(["require", "exports"], function (require, exports) {
         }
         onLoad() {
             let actionType = this.addActionType("See All!", "Let's you see everything", (item) => {
-                game.options.zoomLevel = 12;
-                game.setZoomLevel();
+                renderer.setTileScale(0.15);
+                renderer.computeSpritesInViewport();
+                game.updateRender = true;
             });
             this.itemArgus = this.addItem({
                 description: "The all seeing eye.",

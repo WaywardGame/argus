@@ -9,8 +9,9 @@ export default class Mod extends Mods.Mod {
 
 	public onLoad(): void {
 		let actionType = this.addActionType("See All!", "Let's you see everything", (item: Item.IItem) => {
-			game.options.zoomLevel = 12;
-			game.setZoomLevel();
+			renderer.setTileScale(0.15);
+			renderer.computeSpritesInViewport();
+			game.updateRender = true;
 		});
 
 		this.itemArgus = this.addItem({
