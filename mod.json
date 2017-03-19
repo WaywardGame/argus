@@ -7,9 +7,9 @@
 		"OnGameStart",
 		"OnKeyBindPress"
 	],
-	"compatible_minor_versions": [
-		2
+	"compatibleMinorVersions": [
+		3
 	],
-	"file": "argus.js",
+	"file": "Argus.js",
 	"publishedFileId": "474819457"
 }

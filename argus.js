@@ -1,10 +1,11 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "Enums", "item/Items", "mod/Mod"], function (require, exports, Enums_1, Items_1, Mod_1) {
     "use strict";
-    class Mod extends Mods.Mod {
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class Argus extends Mod_1.default {
         onInitialize(saveDataGlobal) {
         }
         onLoad() {
-            let actionType = this.addActionType("See All!", "Let's you see everything", (item) => {
+            const actionType = this.addActionType("See All!", "Let's you see everything", (player, argument, result) => {
                 renderer.setTileScale(0.15);
                 renderer.computeSpritesInViewport();
                 game.updateRender = true;
@@ -14,21 +15,21 @@ define(["require", "exports"], function (require, exports) {
                 name: "Argus",
                 weight: 2,
                 attack: 1,
-                damageType: DamageType.Blunt,
-                equip: EquipType.Held,
+                damageType: Enums_1.DamageType.Blunt,
+                equip: Enums_1.EquipType.Held,
                 onEquip: this.onEquip,
                 onUnequip: this.onUnequip,
                 use: [actionType],
                 recipe: {
                     components: [
-                        Item.RecipeComponent(ItemTypeGroup.Sharpened, 1, 0),
-                        Item.RecipeComponent(ItemType.Lens, 2, 2, 2),
-                        Item.RecipeComponent(ItemType.Log, 1, 1, 1),
-                        Item.RecipeComponent(ItemType.String, 1, 1, 1)
+                        Items_1.RecipeComponent(Enums_1.ItemTypeGroup.Sharpened, 1, 0),
+                        Items_1.RecipeComponent(Enums_1.ItemType.Lens, 2, 2, 2),
+                        Items_1.RecipeComponent(Enums_1.ItemType.Log, 1, 1, 1),
+                        Items_1.RecipeComponent(Enums_1.ItemType.String, 1, 1, 1)
                     ],
-                    skill: SkillType.Tinkering,
-                    level: RecipeLevel.Advanced,
-                    malignity: 10
+                    skill: Enums_1.SkillType.Tinkering,
+                    level: Enums_1.RecipeLevel.Advanced,
+                    reputation: 10
                 },
                 disassemble: true,
                 durability: 500
@@ -41,12 +42,12 @@ define(["require", "exports"], function (require, exports) {
         }
         onGameStart(isLoadingSave) {
             if (!isLoadingSave) {
-                Item.create(this.itemArgus);
+                localPlayer.createItemInInventory(this.itemArgus);
             }
         }
         onKeyBindPress(keyBind) {
             if (this.keyBind === keyBind) {
-                if (game.fov.disabled) {
+                if (fieldOfView.disabled) {
                     this.onUnequip(null);
                 }
                 else {
@@ -56,17 +57,16 @@ define(["require", "exports"], function (require, exports) {
             }
         }
         onEquip(item) {
-            game.fov.disabled = true;
-            game.fov.compute();
+            fieldOfView.disabled = true;
+            fieldOfView.compute();
             game.updateGame();
         }
         onUnequip(item) {
-            game.fov.disabled = false;
-            game.fov.compute();
+            fieldOfView.disabled = false;
+            fieldOfView.compute();
             game.updateGame();
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = Mod;
+    exports.default = Argus;
 });
-//# sourceMappingURL=argus.js.map
+//# sourceMappingURL=Argus.js.map

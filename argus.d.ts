@@ -1,5 +1,7 @@
-/// <reference path="mod-reference/modreference.d.ts" />
-export default class Mod extends Mods.Mod {
+import { KeyBind } from "Enums";
+import { IItem } from "item/IItem";
+import Mod from "mod/Mod";
+export default class Argus extends Mod {
     private itemArgus;
     private keyBind;
     onInitialize(saveDataGlobal: any): any;
@@ -8,6 +10,6 @@ export default class Mod extends Mods.Mod {
     onSave(): any;
     onGameStart(isLoadingSave: boolean): void;
     onKeyBindPress(keyBind: KeyBind): boolean;
-    onEquip(item: Item.IItem): void;
-    onUnequip(item: Item.IItem): void;
+    onEquip(item: IItem): void;
+    onUnequip(item: IItem): void;
 }

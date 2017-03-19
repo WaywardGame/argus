@@ -1,6 +1,11 @@
-﻿/// <reference path="mod-reference/modreference.d.ts"/>
+import { IActionArgument, IActionResult } from "action/IAction";
+import { DamageType, EquipType, ItemType, ItemTypeGroup, KeyBind, RecipeLevel, SkillType } from "Enums";
+import { IItem } from "item/IItem";
+import { RecipeComponent } from "item/Items";
+import Mod from "mod/Mod";
+import IPlayer from "player/IPlayer";
 
-export default class Mod extends Mods.Mod {
+export default class Argus extends Mod {
 	private itemArgus: number;
 	private keyBind: number;
 
@@ -8,7 +13,7 @@ export default class Mod extends Mods.Mod {
 	}
 
 	public onLoad(): void {
-		let actionType = this.addActionType("See All!", "Let's you see everything", (item: Item.IItem) => {
+		const actionType = this.addActionType("See All!", "Let's you see everything", (player: IPlayer, argument: IActionArgument, result: IActionResult) => {
 			renderer.setTileScale(0.15);
 			renderer.computeSpritesInViewport();
 			game.updateRender = true;
@@ -26,14 +31,14 @@ export default class Mod extends Mods.Mod {
 			use: [actionType],
 			recipe: {
 				components: [
-					Item.RecipeComponent(ItemTypeGroup.Sharpened, 1, 0),
-					Item.RecipeComponent(ItemType.Lens, 2, 2, 2),
-					Item.RecipeComponent(ItemType.Log, 1, 1, 1),
-					Item.RecipeComponent(ItemType.String, 1, 1, 1)
+					RecipeComponent(ItemTypeGroup.Sharpened, 1, 0),
+					RecipeComponent(ItemType.Lens, 2, 2, 2),
+					RecipeComponent(ItemType.Log, 1, 1, 1),
+					RecipeComponent(ItemType.String, 1, 1, 1)
 				],
 				skill: SkillType.Tinkering,
 				level: RecipeLevel.Advanced,
-				malignity: 10
+				reputation: 10
 			},
 			disassemble: true,
 			durability: 500
@@ -51,13 +56,13 @@ export default class Mod extends Mods.Mod {
 	public onGameStart(isLoadingSave: boolean): void {
 		if (!isLoadingSave) {
 			// give argus
-			Item.create(this.itemArgus);
+			localPlayer.createItemInInventory(this.itemArgus);
 		}
 	}
 
 	public onKeyBindPress(keyBind: KeyBind): boolean {
 		if (this.keyBind === keyBind) {
-			if (game.fov.disabled) {
+			if (fieldOfView.disabled) {
 				this.onUnequip(null);
 			} else {
 				this.onEquip(null);
@@ -66,15 +71,15 @@ export default class Mod extends Mods.Mod {
 		}
 	}
 
-	public onEquip(item: Item.IItem) {
-		game.fov.disabled = true;
-		game.fov.compute();
+	public onEquip(item: IItem) {
+		fieldOfView.disabled = true;
+		fieldOfView.compute();
 		game.updateGame();
 	}
 
-	public onUnequip(item: Item.IItem) {
-		game.fov.disabled = false;
-		game.fov.compute();
+	public onUnequip(item: IItem) {
+		fieldOfView.disabled = false;
+		fieldOfView.compute();
 		game.updateGame();
 	}
 }
