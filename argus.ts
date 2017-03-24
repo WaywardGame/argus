@@ -13,7 +13,10 @@ export default class Argus extends Mod {
 	}
 
 	public onLoad(): void {
-		const actionType = this.addActionType("See All!", "Let's you see everything", (player: IPlayer, argument: IActionArgument, result: IActionResult) => {
+		const actionType = this.addActionType({
+			name: "See All!",
+			description: "Let's you see everything"
+		}, (player: IPlayer, argument: IActionArgument, result: IActionResult) => {
 			renderer.setTileScale(0.15);
 			renderer.computeSpritesInViewport();
 			game.updateRender = true;

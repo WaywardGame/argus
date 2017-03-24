@@ -1,11 +1,13 @@
 define(["require", "exports", "Enums", "item/Items", "mod/Mod"], function (require, exports, Enums_1, Items_1, Mod_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
     class Argus extends Mod_1.default {
         onInitialize(saveDataGlobal) {
         }
         onLoad() {
-            const actionType = this.addActionType("See All!", "Let's you see everything", (player, argument, result) => {
+            const actionType = this.addActionType({
+                name: "See All!",
+                description: "Let's you see everything"
+            }, (player, argument, result) => {
                 renderer.setTileScale(0.15);
                 renderer.computeSpritesInViewport();
                 game.updateRender = true;
@@ -67,6 +69,7 @@ define(["require", "exports", "Enums", "item/Items", "mod/Mod"], function (requi
             game.updateGame();
         }
     }
+    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Argus;
 });
 //# sourceMappingURL=Argus.js.map
