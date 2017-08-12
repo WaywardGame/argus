@@ -77,12 +77,12 @@ export default class Argus extends Mod {
 	public onEquip(item: IItem) {
 		fieldOfView.disabled = true;
 		fieldOfView.compute();
-		game.updateGame();
+		game.updateView(true);
 	}
 
 	public onUnequip(item: IItem) {
 		fieldOfView.disabled = false;
 		fieldOfView.compute();
-		game.updateGame();
+		game.updateView(true);
 	}
 }

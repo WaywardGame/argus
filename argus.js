@@ -1,5 +1,6 @@
 define(["require", "exports", "Enums", "item/Items", "mod/Mod"], function (require, exports, Enums_1, Items_1, Mod_1) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     class Argus extends Mod_1.default {
         onInitialize(saveDataGlobal) {
         }
@@ -61,15 +62,14 @@ define(["require", "exports", "Enums", "item/Items", "mod/Mod"], function (requi
         onEquip(item) {
             fieldOfView.disabled = true;
             fieldOfView.compute();
-            game.updateGame();
+            game.updateView(true);
         }
         onUnequip(item) {
             fieldOfView.disabled = false;
             fieldOfView.compute();
-            game.updateGame();
+            game.updateView(true);
         }
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Argus;
 });
 //# sourceMappingURL=Argus.js.map
