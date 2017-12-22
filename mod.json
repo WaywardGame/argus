@@ -4,12 +4,15 @@
 	"version": "1.2.1",
 	"author": "Spacetech",
 	"hooks": [
-		"OnGameStart",
-		"OnKeyBindPress"
+		"OnBindLoop",
+		"OnGameStart"
 	],
 	"compatibleMinorVersions": [
-		4
+		5
 	],
 	"file": "Argus.js",
-	"publishedFileId": "474819457"
+	"publishedFileId": "474819457",
+	"languages": [
+		"lang/english"
+	]
 }

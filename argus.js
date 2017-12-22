@@ -3,6 +3,7 @@ define(["require", "exports", "Enums", "item/Items", "mod/Mod"], function (requi
     Object.defineProperty(exports, "__esModule", { value: true });
     class Argus extends Mod_1.default {
         onInitialize(saveDataGlobal) {
+            this.keyBind = this.addBindable("Toggle", { key: "Delete" });
         }
         onLoad() {
             const actionType = this.addActionType({
@@ -37,27 +38,23 @@ define(["require", "exports", "Enums", "item/Items", "mod/Mod"], function (requi
                 disassemble: true,
                 durability: 500
             });
-            this.keyBind = this.addKeyBind("Argus", 46);
-        }
-        onUnload() {
-        }
-        onSave() {
         }
         onGameStart(isLoadingSave) {
             if (!isLoadingSave) {
                 localPlayer.createItemInInventory(this.itemArgus);
             }
         }
-        onKeyBindPress(keyBind) {
-            if (this.keyBind === keyBind) {
+        onBindLoop(bindPressed, api) {
+            if (api.wasPressed(this.keyBind) && !bindPressed) {
                 if (fieldOfView.disabled) {
                     this.onUnequip(null);
                 }
                 else {
                     this.onEquip(null);
                 }
-                return false;
+                bindPressed = true;
             }
+            return bindPressed;
         }
         onEquip(item) {
             fieldOfView.disabled = true;

@@ -1,0 +1,8 @@
+{
+	"extends": "English",
+	"dictionaries": {
+		"bindable": {
+			"modArgusToggle": "Toggle Field of Vision"
+		}
+	}
+}

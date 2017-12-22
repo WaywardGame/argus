@@ -1,15 +1,17 @@
 import { IActionArgument, IActionResult } from "action/IAction";
-import { DamageType, EquipType, ItemType, ItemTypeGroup, KeyBind, RecipeLevel, SkillType } from "Enums";
+import { DamageType, EquipType, ItemType, ItemTypeGroup, RecipeLevel, SkillType } from "Enums";
 import { IItem } from "item/IItem";
 import { RecipeComponent } from "item/Items";
 import Mod from "mod/Mod";
 import IPlayer from "player/IPlayer";
+import { BindCatcherApi } from "newui/BindingManager";
 
 export default class Argus extends Mod {
 	private itemArgus: number;
 	private keyBind: number;
 
 	public onInitialize(saveDataGlobal: any): any {
+		this.keyBind = this.addBindable("Toggle", { key: "Delete" });
 	}
 
 	public onLoad(): void {
@@ -46,14 +48,6 @@ export default class Argus extends Mod {
 			disassemble: true,
 			durability: 500
 		});
-
-		this.keyBind = this.addKeyBind("Argus", 46);
-	}
-
-	public onUnload(): void {
-	}
-
-	public onSave(): any {
 	}
 
 	public onGameStart(isLoadingSave: boolean): void {
@@ -63,15 +57,17 @@ export default class Argus extends Mod {
 		}
 	}
 
-	public onKeyBindPress(keyBind: KeyBind): boolean {
-		if (this.keyBind === keyBind) {
+	public onBindLoop(bindPressed: true | undefined, api: BindCatcherApi): true | undefined {
+		if (api.wasPressed(this.keyBind) && !bindPressed) {
 			if (fieldOfView.disabled) {
 				this.onUnequip(null);
 			} else {
 				this.onEquip(null);
 			}
-			return false;
+			bindPressed = true;
 		}
+
+		return bindPressed;
 	}
 
 	public onEquip(item: IItem) {
