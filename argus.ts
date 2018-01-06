@@ -3,8 +3,8 @@ import { DamageType, EquipType, ItemType, ItemTypeGroup, RecipeLevel, SkillType 
 import { IItem } from "item/IItem";
 import { RecipeComponent } from "item/Items";
 import Mod from "mod/Mod";
-import IPlayer from "player/IPlayer";
 import { BindCatcherApi } from "newui/BindingManager";
+import IPlayer from "player/IPlayer";
 
 export default class Argus extends Mod {
 	private itemArgus: number;
@@ -61,9 +61,11 @@ export default class Argus extends Mod {
 		if (api.wasPressed(this.keyBind) && !bindPressed) {
 			if (fieldOfView.disabled) {
 				this.onUnequip(null);
+				
 			} else {
 				this.onEquip(null);
 			}
+
 			bindPressed = true;
 		}
 
