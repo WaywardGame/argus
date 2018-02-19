@@ -8,7 +8,7 @@ define(["require", "exports", "Enums", "item/Items", "mod/Mod"], function (requi
         onLoad() {
             const actionType = this.addActionType({
                 name: "See All!",
-                description: "Let's you see everything"
+                description: "Lets you see everything."
             }, (player, argument, result) => {
                 renderer.setTileScale(0.15);
                 renderer.computeSpritesInViewport();
@@ -16,7 +16,8 @@ define(["require", "exports", "Enums", "item/Items", "mod/Mod"], function (requi
             });
             this.itemArgus = this.addItem({
                 description: "The all seeing eye.",
-                name: "Argus",
+                name: "argus",
+                prefix: "an ",
                 weight: 2,
                 attack: 1,
                 damageType: Enums_1.DamageType.Blunt,

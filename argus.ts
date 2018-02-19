@@ -17,7 +17,7 @@ export default class Argus extends Mod {
 	public onLoad(): void {
 		const actionType = this.addActionType({
 			name: "See All!",
-			description: "Let's you see everything"
+			description: "Lets you see everything."
 		}, (player: IPlayer, argument: IActionArgument, result: IActionResult) => {
 			renderer.setTileScale(0.15);
 			renderer.computeSpritesInViewport();
@@ -26,7 +26,8 @@ export default class Argus extends Mod {
 
 		this.itemArgus = this.addItem({
 			description: "The all seeing eye.",
-			name: "Argus",
+			name: "argus",
+			prefix: "an ",
 			weight: 2,
 			attack: 1,
 			damageType: DamageType.Blunt,
