@@ -1,7 +1,8 @@
 import { IActionArgument, IActionResult } from "action/IAction";
-import { DamageType, EquipType, ItemType, ItemTypeGroup, RecipeLevel, SkillType } from "Enums";
+import { Bindable, DamageType, EquipType, ItemType, ItemTypeGroup, RecipeLevel, SkillType } from "Enums";
 import { IItem } from "item/IItem";
 import { RecipeComponent } from "item/Items";
+import { HookMethod } from "mod/IHookHost";
 import Mod from "mod/Mod";
 import { BindCatcherApi } from "newui/BindingManager";
 import IPlayer from "player/IPlayer";
@@ -51,14 +52,16 @@ export default class Argus extends Mod {
 		});
 	}
 
-	public onGameStart(isLoadingSave: boolean): void {
+	@HookMethod
+	public onGameStart(isLoadingSave: boolean, playedCount: number): void {
 		if (!isLoadingSave) {
 			// give argus
 			localPlayer.createItemInInventory(this.itemArgus);
 		}
 	}
 
-	public onBindLoop(bindPressed: true | undefined, api: BindCatcherApi): true | undefined {
+	@HookMethod
+	public onBindLoop(bindPressed: Bindable, api: BindCatcherApi): Bindable {
 		if (api.wasPressed(this.keyBind) && !bindPressed) {
 			if (fieldOfView.disabled) {
 				this.onUnequip(null);
@@ -67,7 +70,7 @@ export default class Argus extends Mod {
 				this.onEquip(null);
 			}
 
-			bindPressed = true;
+			bindPressed = this.keyBind;
 		}
 
 		return bindPressed;

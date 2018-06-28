@@ -3,12 +3,8 @@
 	"description": "Adds a new item called Argus into the game.",
 	"version": "1.2.1",
 	"author": "Spacetech",
-	"hooks": [
-		"OnBindLoop",
-		"OnGameStart"
-	],
 	"compatibleMinorVersions": [
-		5
+		6
 	],
 	"file": "Argus.js",
 	"publishedFileId": "474819457",
