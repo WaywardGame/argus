@@ -1,14 +1,15 @@
+import { IActionArgument, IActionResult } from "action/IAction";
 import { Bindable } from "Enums";
-import { IItem } from "item/IItem";
 import Mod from "mod/Mod";
 import { BindCatcherApi } from "newui/BindingManager";
+import IPlayer from "player/IPlayer";
 export default class Argus extends Mod {
+    readonly keyBind: Bindable;
     private itemArgus;
-    private keyBind;
-    onInitialize(saveDataGlobal: any): any;
     onLoad(): void;
     onGameStart(isLoadingSave: boolean, playedCount: number): void;
     onBindLoop(bindPressed: Bindable, api: BindCatcherApi): Bindable;
-    onEquip(item: IItem): void;
-    onUnequip(item: IItem): void;
+    protected seeAll(player: IPlayer, argument: IActionArgument, result: IActionResult): void;
+    private onEquip;
+    private onUnequip;
 }

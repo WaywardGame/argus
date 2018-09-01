@@ -4,27 +4,19 @@ import { IItem } from "item/IItem";
 import { RecipeComponent } from "item/Items";
 import { HookMethod } from "mod/IHookHost";
 import Mod from "mod/Mod";
+import Register, { Registry } from "mod/ModRegistry";
 import { BindCatcherApi } from "newui/BindingManager";
 import IPlayer from "player/IPlayer";
+import { Bound } from "utilities/Objects";
 
 export default class Argus extends Mod {
-	private itemArgus: number;
-	private keyBind: number;
 
-	public onInitialize(saveDataGlobal: any): any {
-		this.keyBind = this.addBindable("Toggle", { key: "Delete" });
-	}
+	@Register.bindable("Toggle", { key: "Delete" })
+	public readonly keyBind: Bindable;
+
+	private itemArgus: number;
 
 	public onLoad(): void {
-		const actionType = this.addActionType({
-			name: "See All!",
-			description: "Lets you see everything."
-		}, (player: IPlayer, argument: IActionArgument, result: IActionResult) => {
-			renderer.setTileScale(0.15);
-			renderer.computeSpritesInViewport();
-			game.updateRender = true;
-		});
-
 		this.itemArgus = this.addItem({
 			description: "The all seeing eye.",
 			name: "argus",
@@ -35,7 +27,7 @@ export default class Argus extends Mod {
 			equip: EquipType.Held,
 			onEquip: this.onEquip,
 			onUnequip: this.onUnequip,
-			use: [actionType],
+			use: [Registry.id(this.seeAll)],
 			recipe: {
 				components: [
 					RecipeComponent(ItemTypeGroup.Sharpened, 1, 0),
@@ -65,7 +57,7 @@ export default class Argus extends Mod {
 		if (api.wasPressed(this.keyBind) && !bindPressed) {
 			if (fieldOfView.disabled) {
 				this.onUnequip(null);
-				
+
 			} else {
 				this.onEquip(null);
 			}
@@ -76,13 +68,25 @@ export default class Argus extends Mod {
 		return bindPressed;
 	}
 
-	public onEquip(item: IItem) {
+	@Register.action({
+		name: "See All!",
+		description: "Lets you see everything."
+	})
+	protected seeAll(player: IPlayer, argument: IActionArgument, result: IActionResult) {
+		renderer.setTileScale(0.15);
+		renderer.computeSpritesInViewport();
+		game.updateRender = true;
+	}
+
+	@Bound
+	private onEquip(item: IItem) {
 		fieldOfView.disabled = true;
 		fieldOfView.compute();
 		game.updateView(true);
 	}
 
-	public onUnequip(item: IItem) {
+	@Bound
+	private onUnequip(item: IItem) {
 		fieldOfView.disabled = false;
 		fieldOfView.compute();
 		game.updateView(true);
