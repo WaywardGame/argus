@@ -4,37 +4,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "Enums", "item/Items", "mod/IHookHost", "mod/Mod", "mod/ModRegistry", "utilities/Objects"], function (require, exports, Enums_1, Items_1, IHookHost_1, Mod_1, ModRegistry_1, Objects_1) {
+define(["require", "exports", "action/Action", "entity/IEntity", "Enums", "item/Items", "mod/IHookHost", "mod/Mod", "mod/ModRegistry", "utilities/Objects"], function (require, exports, Action_1, IEntity_1, Enums_1, Items_1, IHookHost_1, Mod_1, ModRegistry_1, Objects_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Argus extends Mod_1.default {
-        onLoad() {
-            this.itemArgus = this.addItem({
-                description: "The all seeing eye.",
-                name: "argus",
-                prefix: "an ",
-                weight: 2,
-                attack: 1,
-                damageType: Enums_1.DamageType.Blunt,
-                equip: Enums_1.EquipType.Held,
-                onEquip: this.onEquip,
-                onUnequip: this.onUnequip,
-                use: [ModRegistry_1.Registry.id(this.seeAll)],
-                recipe: {
-                    components: [
-                        Items_1.RecipeComponent(Enums_1.ItemTypeGroup.Sharpened, 1, 0),
-                        Items_1.RecipeComponent(Enums_1.ItemType.Lens, 2, 2, 2),
-                        Items_1.RecipeComponent(Enums_1.ItemType.Log, 1, 1, 1),
-                        Items_1.RecipeComponent(Enums_1.ItemType.String, 1, 1, 1)
-                    ],
-                    skill: Enums_1.SkillType.Tinkering,
-                    level: Enums_1.RecipeLevel.Advanced,
-                    reputation: 10
-                },
-                disassemble: true,
-                durability: 500
-            });
-        }
         onGameStart(isLoadingSave, playedCount) {
             if (!isLoadingSave) {
                 localPlayer.createItemInInventory(this.itemArgus);
@@ -52,11 +25,6 @@ define(["require", "exports", "Enums", "item/Items", "mod/IHookHost", "mod/Mod",
             }
             return bindPressed;
         }
-        seeAll(player, argument, result) {
-            renderer.setTileScale(0.15);
-            renderer.computeSpritesInViewport();
-            game.updateRender = true;
-        }
         onEquip(item) {
             fieldOfView.disabled = true;
             fieldOfView.compute();
@@ -72,23 +40,53 @@ define(["require", "exports", "Enums", "item/Items", "mod/IHookHost", "mod/Mod",
         ModRegistry_1.default.bindable("Toggle", { key: "Delete" })
     ], Argus.prototype, "keyBind", void 0);
     __decorate([
+        ModRegistry_1.default.action("SeeAll", new Action_1.Action()
+            .setUsableBy(IEntity_1.EntityType.Player)
+            .setHandler(action => {
+            renderer.setTileScale(0.15);
+            renderer.computeSpritesInViewport();
+            game.updateRender = true;
+        }))
+    ], Argus.prototype, "actionSeeAll", void 0);
+    __decorate([
+        ModRegistry_1.default.item("argus", {
+            weight: 2,
+            attack: 1,
+            damageType: Enums_1.DamageType.Blunt,
+            equip: Enums_1.EquipType.Held,
+            onEquip: item => Argus.INSTANCE.onEquip(item),
+            onUnequip: item => Argus.INSTANCE.onUnequip(item),
+            use: [ModRegistry_1.Registry().get("actionSeeAll")],
+            recipe: {
+                components: [
+                    Items_1.RecipeComponent(Enums_1.ItemTypeGroup.Sharpened, 1, 0),
+                    Items_1.RecipeComponent(Enums_1.ItemType.Lens, 2, 2, 2),
+                    Items_1.RecipeComponent(Enums_1.ItemType.Log, 1, 1, 1),
+                    Items_1.RecipeComponent(Enums_1.ItemType.String, 1, 1, 1)
+                ],
+                skill: Enums_1.SkillType.Tinkering,
+                level: Enums_1.RecipeLevel.Advanced,
+                reputation: 10
+            },
+            disassemble: true,
+            durability: 500
+        })
+    ], Argus.prototype, "itemArgus", void 0);
+    __decorate([
         IHookHost_1.HookMethod
     ], Argus.prototype, "onGameStart", null);
     __decorate([
         IHookHost_1.HookMethod
     ], Argus.prototype, "onBindLoop", null);
     __decorate([
-        ModRegistry_1.default.action({
-            name: "See All!",
-            description: "Lets you see everything."
-        })
-    ], Argus.prototype, "seeAll", null);
-    __decorate([
         Objects_1.Bound
     ], Argus.prototype, "onEquip", null);
     __decorate([
         Objects_1.Bound
     ], Argus.prototype, "onUnequip", null);
+    __decorate([
+        Mod_1.default.instance("Argus")
+    ], Argus, "INSTANCE", void 0);
     exports.default = Argus;
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQXJndXMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJBcmd1cy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7SUFXQSxNQUFxQixLQUFNLFNBQVEsYUFBRztRQU85QixNQUFNO1lBQ1osSUFBSSxDQUFDLFNBQVMsR0FBRyxJQUFJLENBQUMsT0FBTyxDQUFDO2dCQUM3QixXQUFXLEVBQUUscUJBQXFCO2dCQUNsQyxJQUFJLEVBQUUsT0FBTztnQkFDYixNQUFNLEVBQUUsS0FBSztnQkFDYixNQUFNLEVBQUUsQ0FBQztnQkFDVCxNQUFNLEVBQUUsQ0FBQztnQkFDVCxVQUFVLEVBQUUsa0JBQVUsQ0FBQyxLQUFLO2dCQUM1QixLQUFLLEVBQUUsaUJBQVMsQ0FBQyxJQUFJO2dCQUNyQixPQUFPLEVBQUUsSUFBSSxDQUFDLE9BQU87Z0JBQ3JCLFNBQVMsRUFBRSxJQUFJLENBQUMsU0FBUztnQkFDekIsR0FBRyxFQUFFLENBQUMsc0JBQVEsQ0FBQyxFQUFFLENBQUMsSUFBSSxDQUFDLE1BQU0sQ0FBQyxDQUFDO2dCQUMvQixNQUFNLEVBQUU7b0JBQ1AsVUFBVSxFQUFFO3dCQUNYLHVCQUFlLENBQUMscUJBQWEsQ0FBQyxTQUFTLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FBQzt3QkFDOUMsdUJBQWUsQ0FBQyxnQkFBUSxDQUFDLElBQUksRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FBQzt3QkFDdkMsdUJBQWUsQ0FBQyxnQkFBUSxDQUFDLEdBQUcsRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FBQzt3QkFDdEMsdUJBQWUsQ0FBQyxnQkFBUSxDQUFDLE1BQU0sRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FBQztxQkFDekM7b0JBQ0QsS0FBSyxFQUFFLGlCQUFTLENBQUMsU0FBUztvQkFDMUIsS0FBSyxFQUFFLG1CQUFXLENBQUMsUUFBUTtvQkFDM0IsVUFBVSxFQUFFLEVBQUU7aUJBQ2Q7Z0JBQ0QsV0FBVyxFQUFFLElBQUk7Z0JBQ2pCLFVBQVUsRUFBRSxHQUFHO2FBQ2YsQ0FBQyxDQUFDO1FBQ0osQ0FBQztRQUdNLFdBQVcsQ0FBQyxhQUFzQixFQUFFLFdBQW1CO1lBQzdELElBQUksQ0FBQyxhQUFhLEVBQUU7Z0JBRW5CLFdBQVcsQ0FBQyxxQkFBcUIsQ0FBQyxJQUFJLENBQUMsU0FBUyxDQUFDLENBQUM7YUFDbEQ7UUFDRixDQUFDO1FBR00sVUFBVSxDQUFDLFdBQXFCLEVBQUUsR0FBbUI7WUFDM0QsSUFBSSxHQUFHLENBQUMsVUFBVSxDQUFDLElBQUksQ0FBQyxPQUFPLENBQUMsSUFBSSxDQUFDLFdBQVcsRUFBRTtnQkFDakQsSUFBSSxXQUFXLENBQUMsUUFBUSxFQUFFO29CQUN6QixJQUFJLENBQUMsU0FBUyxDQUFDLElBQUksQ0FBQyxDQUFDO2lCQUVyQjtxQkFBTTtvQkFDTixJQUFJLENBQUMsT0FBTyxDQUFDLElBQUksQ0FBQyxDQUFDO2lCQUNuQjtnQkFFRCxXQUFXLEdBQUcsSUFBSSxDQUFDLE9BQU8sQ0FBQzthQUMzQjtZQUVELE9BQU8sV0FBVyxDQUFDO1FBQ3BCLENBQUM7UUFNUyxNQUFNLENBQUMsTUFBZSxFQUFFLFFBQXlCLEVBQUUsTUFBcUI7WUFDakYsUUFBUSxDQUFDLFlBQVksQ0FBQyxJQUFJLENBQUMsQ0FBQztZQUM1QixRQUFRLENBQUMsd0JBQXdCLEVBQUUsQ0FBQztZQUNwQyxJQUFJLENBQUMsWUFBWSxHQUFHLElBQUksQ0FBQztRQUMxQixDQUFDO1FBR08sT0FBTyxDQUFDLElBQVc7WUFDMUIsV0FBVyxDQUFDLFFBQVEsR0FBRyxJQUFJLENBQUM7WUFDNUIsV0FBVyxDQUFDLE9BQU8sRUFBRSxDQUFDO1lBQ3RCLElBQUksQ0FBQyxVQUFVLENBQUMsSUFBSSxDQUFDLENBQUM7UUFDdkIsQ0FBQztRQUdPLFNBQVMsQ0FBQyxJQUFXO1lBQzVCLFdBQVcsQ0FBQyxRQUFRLEdBQUcsS0FBSyxDQUFDO1lBQzdCLFdBQVcsQ0FBQyxPQUFPLEVBQUUsQ0FBQztZQUN0QixJQUFJLENBQUMsVUFBVSxDQUFDLElBQUksQ0FBQyxDQUFDO1FBQ3ZCLENBQUM7S0FDRDtJQS9FQTtRQURDLHFCQUFRLENBQUMsUUFBUSxDQUFDLFFBQVEsRUFBRSxFQUFFLEdBQUcsRUFBRSxRQUFRLEVBQUUsQ0FBQzswQ0FDYjtJQWlDbEM7UUFEQyxzQkFBVTs0Q0FNVjtJQUdEO1FBREMsc0JBQVU7MkNBY1Y7SUFNRDtRQUpDLHFCQUFRLENBQUMsTUFBTSxDQUFDO1lBQ2hCLElBQUksRUFBRSxVQUFVO1lBQ2hCLFdBQVcsRUFBRSwwQkFBMEI7U0FDdkMsQ0FBQzt1Q0FLRDtJQUdEO1FBREMsZUFBSzt3Q0FLTDtJQUdEO1FBREMsZUFBSzswQ0FLTDtJQWpGRix3QkFrRkMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQXJndXMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJBcmd1cy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7SUFZQSxNQUFxQixLQUFNLFNBQVEsYUFBRztRQTBDOUIsV0FBVyxDQUFDLGFBQXNCLEVBQUUsV0FBbUI7WUFDN0QsSUFBSSxDQUFDLGFBQWEsRUFBRTtnQkFFbkIsV0FBVyxDQUFDLHFCQUFxQixDQUFDLElBQUksQ0FBQyxTQUFTLENBQUMsQ0FBQzthQUNsRDtRQUNGLENBQUM7UUFHTSxVQUFVLENBQUMsV0FBcUIsRUFBRSxHQUFtQjtZQUMzRCxJQUFJLEdBQUcsQ0FBQyxVQUFVLENBQUMsSUFBSSxDQUFDLE9BQU8sQ0FBQyxJQUFJLENBQUMsV0FBVyxFQUFFO2dCQUNqRCxJQUFJLFdBQVcsQ0FBQyxRQUFRLEVBQUU7b0JBQ3pCLElBQUksQ0FBQyxTQUFTLENBQUMsSUFBSSxDQUFDLENBQUM7aUJBRXJCO3FCQUFNO29CQUNOLElBQUksQ0FBQyxPQUFPLENBQUMsSUFBSSxDQUFDLENBQUM7aUJBQ25CO2dCQUVELFdBQVcsR0FBRyxJQUFJLENBQUMsT0FBTyxDQUFDO2FBQzNCO1lBRUQsT0FBTyxXQUFXLENBQUM7UUFDcEIsQ0FBQztRQUdPLE9BQU8sQ0FBQyxJQUFXO1lBQzFCLFdBQVcsQ0FBQyxRQUFRLEdBQUcsSUFBSSxDQUFDO1lBQzVCLFdBQVcsQ0FBQyxPQUFPLEVBQUUsQ0FBQztZQUN0QixJQUFJLENBQUMsVUFBVSxDQUFDLElBQUksQ0FBQyxDQUFDO1FBQ3ZCLENBQUM7UUFHTyxTQUFTLENBQUMsSUFBVztZQUM1QixXQUFXLENBQUMsUUFBUSxHQUFHLEtBQUssQ0FBQztZQUM3QixXQUFXLENBQUMsT0FBTyxFQUFFLENBQUM7WUFDdEIsSUFBSSxDQUFDLFVBQVUsQ0FBQyxJQUFJLENBQUMsQ0FBQztRQUN2QixDQUFDO0tBQ0Q7SUF4RUE7UUFEQyxxQkFBUSxDQUFDLFFBQVEsQ0FBQyxRQUFRLEVBQUUsRUFBRSxHQUFHLEVBQUUsUUFBUSxFQUFFLENBQUM7MENBQ2I7SUFTbEM7UUFQQyxxQkFBUSxDQUFDLE1BQU0sQ0FBQyxRQUFRLEVBQUUsSUFBSSxlQUFNLEVBQUU7YUFDckMsV0FBVyxDQUFDLG9CQUFVLENBQUMsTUFBTSxDQUFDO2FBQzlCLFVBQVUsQ0FBQyxNQUFNLENBQUMsRUFBRTtZQUNwQixRQUFRLENBQUMsWUFBWSxDQUFDLElBQUksQ0FBQyxDQUFDO1lBQzVCLFFBQVEsQ0FBQyx3QkFBd0IsRUFBRSxDQUFDO1lBQ3BDLElBQUksQ0FBQyxZQUFZLEdBQUcsSUFBSSxDQUFDO1FBQzFCLENBQUMsQ0FBQyxDQUFDOytDQUNxQztJQXdCekM7UUF0QkMscUJBQVEsQ0FBQyxJQUFJLENBQUMsT0FBTyxFQUFFO1lBQ3ZCLE1BQU0sRUFBRSxDQUFDO1lBQ1QsTUFBTSxFQUFFLENBQUM7WUFDVCxVQUFVLEVBQUUsa0JBQVUsQ0FBQyxLQUFLO1lBQzVCLEtBQUssRUFBRSxpQkFBUyxDQUFDLElBQUk7WUFDckIsT0FBTyxFQUFFLElBQUksQ0FBQyxFQUFFLENBQUMsS0FBSyxDQUFDLFFBQVEsQ0FBQyxPQUFPLENBQUMsSUFBSSxDQUFDO1lBQzdDLFNBQVMsRUFBRSxJQUFJLENBQUMsRUFBRSxDQUFDLEtBQUssQ0FBQyxRQUFRLENBQUMsU0FBUyxDQUFDLElBQUksQ0FBQztZQUNqRCxHQUFHLEVBQUUsQ0FBQyxzQkFBUSxFQUFxQixDQUFDLEdBQUcsQ0FBQyxjQUFjLENBQUMsQ0FBQztZQUN4RCxNQUFNLEVBQUU7Z0JBQ1AsVUFBVSxFQUFFO29CQUNYLHVCQUFlLENBQUMscUJBQWEsQ0FBQyxTQUFTLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FBQztvQkFDOUMsdUJBQWUsQ0FBQyxnQkFBUSxDQUFDLElBQUksRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FBQztvQkFDdkMsdUJBQWUsQ0FBQyxnQkFBUSxDQUFDLEdBQUcsRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FBQztvQkFDdEMsdUJBQWUsQ0FBQyxnQkFBUSxDQUFDLE1BQU0sRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FBQztpQkFDekM7Z0JBQ0QsS0FBSyxFQUFFLGlCQUFTLENBQUMsU0FBUztnQkFDMUIsS0FBSyxFQUFFLG1CQUFXLENBQUMsUUFBUTtnQkFDM0IsVUFBVSxFQUFFLEVBQUU7YUFDZDtZQUNELFdBQVcsRUFBRSxJQUFJO1lBQ2pCLFVBQVUsRUFBRSxHQUFHO1NBQ2YsQ0FBQzs0Q0FDeUI7SUFHM0I7UUFEQyxzQkFBVTs0Q0FNVjtJQUdEO1FBREMsc0JBQVU7MkNBY1Y7SUFHRDtRQURDLGVBQUs7d0NBS0w7SUFHRDtRQURDLGVBQUs7MENBS0w7SUExRUQ7UUFEQyxhQUFHLENBQUMsUUFBUSxDQUFRLE9BQU8sQ0FBQztpQ0FDVTtJQUh4Qyx3QkE4RUMifQ==

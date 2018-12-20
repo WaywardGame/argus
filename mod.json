@@ -4,11 +4,14 @@
 	"version": "1.2.1",
 	"author": "Spacetech",
 	"compatibleMinorVersions": [
-		6
+		7
 	],
 	"file": "Argus.js",
-	"publishedFileId": "474819457",
 	"languages": [
 		"lang/english"
-	]
+	],
+	"tags": [
+		"Item"
+	],
+	"publishedFileId": "474819457"
 }

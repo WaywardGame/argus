@@ -3,6 +3,17 @@
 	"dictionaries": {
 		"bindable": {
 			"modArgusToggle": "Toggle Field of Vision"
+		},
+		"item": {
+			"modArgusArgus": ["argus", "The all seeing eye."]
+		},
+		"action": {
+			"modArgusSeeAll": ["See All!", "Allows you to see everything."]
 		}
+	},
+	"pluralizationRules": {
+		"pluralRules": {
+			"^argus$": "argii"
+		} 
 	}
 }
