@@ -6,7 +6,7 @@
 	"compatibleMinorVersions": [
 		7
 	],
-	"file": "Argus.js",
+	"file": "out/Argus.js",
 	"languages": [
 		"lang/english"
 	],
