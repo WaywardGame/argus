@@ -2,6 +2,7 @@ import { Action } from "action/Action";
 import { ActionType } from "action/IAction";
 import { EntityType } from "entity/IEntity";
 import { Bindable, DamageType, EquipType, ItemType, ItemTypeGroup, RecipeLevel, SkillType } from "Enums";
+import { RenderSource } from "game/IGame";
 import { IItem } from "item/IItem";
 import { RecipeComponent } from "item/Items";
 import { HookMethod } from "mod/IHookHost";
@@ -23,7 +24,7 @@ export default class Argus extends Mod {
 		.setHandler(action => {
 			renderer.setTileScale(0.15);
 			renderer.computeSpritesInViewport();
-			game.updateRender = true;
+			game.updateRender(RenderSource.Mod);
 		}))
 	public readonly actionSeeAll: ActionType;
 
@@ -51,7 +52,7 @@ export default class Argus extends Mod {
 	})
 	public itemArgus: ItemType;
 
-	@HookMethod
+	@Override @HookMethod
 	public onGameStart(isLoadingSave: boolean, playedCount: number): void {
 		if (!isLoadingSave) {
 			// give argus
@@ -59,7 +60,7 @@ export default class Argus extends Mod {
 		}
 	}
 
-	@HookMethod
+	@Override @HookMethod
 	public onBindLoop(bindPressed: Bindable, api: BindCatcherApi): Bindable {
 		if (api.wasPressed(this.keyBind) && !bindPressed) {
 			if (fieldOfView.disabled) {
@@ -79,13 +80,13 @@ export default class Argus extends Mod {
 	private onEquip(item: IItem) {
 		fieldOfView.disabled = true;
 		fieldOfView.compute();
-		game.updateView(true);
+		game.updateView(RenderSource.Mod, true);
 	}
 
 	@Bound
 	private onUnequip(item: IItem) {
 		fieldOfView.disabled = false;
 		fieldOfView.compute();
-		game.updateView(true);
+		game.updateView(RenderSource.Mod, true);
 	}
 }
