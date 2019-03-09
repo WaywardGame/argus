@@ -29,7 +29,6 @@ export default class Argus extends Mod {
 	public readonly actionSeeAll: ActionType;
 
 	@Register.item("argus", {
-		weight: 2,
 		attack: 1,
 		damageType: DamageType.Blunt,
 		equip: EquipType.Held,
@@ -38,10 +37,10 @@ export default class Argus extends Mod {
 		use: [Registry<Argus, ActionType>().get("actionSeeAll")],
 		recipe: {
 			components: [
-				RecipeComponent(ItemTypeGroup.Sharpened, 1, 0),
 				RecipeComponent(ItemType.Lens, 2, 2, 2),
 				RecipeComponent(ItemType.Log, 1, 1, 1),
-				RecipeComponent(ItemType.String, 1, 1, 1)
+				RecipeComponent(ItemType.String, 1, 1, 1),
+				RecipeComponent(ItemTypeGroup.Sharpened, 1, 0)
 			],
 			skill: SkillType.Tinkering,
 			level: RecipeLevel.Advanced,
