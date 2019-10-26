@@ -1,15 +1,15 @@
-import { Action } from "action/Action";
-import { ActionType } from "action/IAction";
-import { EntityType } from "entity/IEntity";
-import { Bindable, DamageType, EquipType, ItemType, ItemTypeGroup, RecipeLevel, SkillType } from "Enums";
+import { Action } from "entity/action/Action";
+import { ActionType } from "entity/action/IAction";
+import { DamageType, EntityType } from "entity/IEntity";
+import { EquipType, SkillType } from "entity/IHuman";
 import { RenderSource } from "game/IGame";
-import { IItem } from "item/IItem";
+import { ItemType, ItemTypeGroup, RecipeLevel } from "item/IItem";
+import Item from "item/Item";
 import { RecipeComponent } from "item/Items";
 import { HookMethod } from "mod/IHookHost";
 import Mod from "mod/Mod";
 import Register, { Registry } from "mod/ModRegistry";
-import { BindCatcherApi } from "newui/BindingManager";
-import { Bound } from "utilities/Objects";
+import { Bindable, BindCatcherApi } from "newui/IBindingManager";
 
 export default class Argus extends Mod {
 
@@ -34,20 +34,20 @@ export default class Argus extends Mod {
 		equip: EquipType.Held,
 		onEquip: item => Argus.INSTANCE.onEquip(item),
 		onUnequip: item => Argus.INSTANCE.onUnequip(item),
-		use: [Registry<Argus, ActionType>().get("actionSeeAll")],
+		use: [Registry<Argus>().get("actionSeeAll")],
 		recipe: {
 			components: [
 				RecipeComponent(ItemType.Lens, 2, 2, 2),
 				RecipeComponent(ItemType.Log, 1, 1, 1),
 				RecipeComponent(ItemType.String, 1, 1, 1),
-				RecipeComponent(ItemTypeGroup.Sharpened, 1, 0)
+				RecipeComponent(ItemTypeGroup.Sharpened, 1, 0),
 			],
 			skill: SkillType.Tinkering,
 			level: RecipeLevel.Advanced,
-			reputation: 10
+			reputation: 10,
 		},
 		disassemble: true,
-		durability: 500
+		durability: 500,
 	})
 	public itemArgus: ItemType;
 
@@ -76,14 +76,14 @@ export default class Argus extends Mod {
 	}
 
 	@Bound
-	private onEquip(item: IItem) {
+	private onEquip(item: Item) {
 		fieldOfView.disabled = true;
 		fieldOfView.compute();
 		game.updateView(RenderSource.Mod, true);
 	}
 
 	@Bound
-	private onUnequip(item: IItem) {
+	private onUnequip(item: Item) {
 		fieldOfView.disabled = false;
 		fieldOfView.compute();
 		game.updateView(RenderSource.Mod, true);

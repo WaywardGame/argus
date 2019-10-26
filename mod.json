@@ -3,9 +3,7 @@
 	"description": "Adds a new item called Argus into the game.",
 	"version": "1.2.1",
 	"author": "Spacetech",
-	"compatibleMinorVersions": [
-		7
-	],
+	"waywardVersion": "2.8.0-beta",
 	"file": "out/Argus.js",
 	"languages": [
 		"lang/english"

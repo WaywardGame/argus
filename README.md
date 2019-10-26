@@ -3,11 +3,13 @@ Adds a new item called Argus into the game.
 
 It allows you to remove any fog of war by equipping it and has a special item use that zooms out further than normally possible.
 
-## Cloning:
+## Cloning/Setup:
 ```
 git clone https://github.com/WaywardGame/argus.git
 cd argus
-git submodule update --init
+On Windows: path/to/wayward/install/wayward.cmd +mod update .
+On macOS: path/to/wayward/install/Wayward.app/Contents/MacOS/Electron +mod update .
+On Linux: path/to/wayward/install/wayward +mod update .
 ```
 
 ## Building:
