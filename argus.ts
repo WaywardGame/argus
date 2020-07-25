@@ -2,21 +2,23 @@ import { Action } from "entity/action/Action";
 import { ActionType } from "entity/action/IAction";
 import { DamageType, EntityType } from "entity/IEntity";
 import { EquipType, SkillType } from "entity/IHuman";
-import { RenderSource } from "game/IGame";
+import { RenderSource, UpdateRenderFlag } from "game/IGame";
 import { ItemType, ItemTypeGroup, RecipeLevel } from "item/IItem";
 import Item from "item/Item";
 import { RecipeComponent } from "item/Items";
 import { HookMethod } from "mod/IHookHost";
 import Mod from "mod/Mod";
 import Register, { Registry } from "mod/ModRegistry";
-import { Bindable, BindCatcherApi } from "newui/IBindingManager";
+import Bind from "newui/input/Bind";
+import Bindable from "newui/input/Bindable";
+import { IInput } from "newui/input/IInput";
 
 export default class Argus extends Mod {
 
 	@Mod.instance<Argus>("Argus")
 	public static readonly INSTANCE: Argus;
 
-	@Register.bindable("Toggle", { key: "Delete" })
+	@Register.bindable("Toggle", IInput.key("Delete"))
 	public readonly keyBind: Bindable;
 
 	@Register.action("SeeAll", new Action()
@@ -24,7 +26,7 @@ export default class Argus extends Mod {
 		.setHandler(action => {
 			renderer.setTileScale(0.15);
 			renderer.computeSpritesInViewport();
-			game.updateRender(RenderSource.Mod);
+			game.updateRender(RenderSource.Mod, UpdateRenderFlag.World);
 		}))
 	public readonly actionSeeAll: ActionType;
 
@@ -59,33 +61,23 @@ export default class Argus extends Mod {
 		}
 	}
 
-	@Override @HookMethod
-	public onBindLoop(bindPressed: Bindable, api: BindCatcherApi): Bindable {
-		if (api.wasPressed(this.keyBind) && !bindPressed) {
-			if (fieldOfView.disabled) {
-				this.onUnequip(null);
-
-			} else {
-				this.onEquip(null);
-			}
-
-			bindPressed = this.keyBind;
-		}
-
-		return bindPressed;
+	@Bind.onDown(Registry<Argus>().get("keyBind"))
+	public onToggleBind() {
+		this[fieldOfView.disabled ? "onUnequip" : "onEquip"](null);
+		return true;
 	}
 
 	@Bound
 	private onEquip(item: Item) {
 		fieldOfView.disabled = true;
-		fieldOfView.compute();
+		fieldOfView.compute(game.absoluteTime);
 		game.updateView(RenderSource.Mod, true);
 	}
 
 	@Bound
 	private onUnequip(item: Item) {
 		fieldOfView.disabled = false;
-		fieldOfView.compute();
+		fieldOfView.compute(game.absoluteTime);
 		game.updateView(RenderSource.Mod, true);
 	}
 }
