@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define(["require", "exports", "entity/action/Action", "entity/IEntity", "entity/IHuman", "game/IGame", "item/IItem", "item/Items", "mod/IHookHost", "mod/Mod", "mod/ModRegistry", "newui/input/Bind", "newui/input/IInput"], function (require, exports, Action_1, IEntity_1, IHuman_1, IGame_1, IItem_1, Items_1, IHookHost_1, Mod_1, ModRegistry_1, Bind_1, IInput_1) {
+define(["require", "exports", "game/entity/action/Action", "game/entity/IEntity", "game/entity/IHuman", "game/IGame", "game/item/IItem", "game/item/Items", "mod/IHookHost", "mod/Mod", "mod/ModRegistry", "ui/input/Bind", "ui/input/IInput"], function (require, exports, Action_1, IEntity_1, IHuman_1, IGame_1, IItem_1, Items_1, IHookHost_1, Mod_1, ModRegistry_1, Bind_1, IInput_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Argus extends Mod_1.default {

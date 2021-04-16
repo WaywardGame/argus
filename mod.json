@@ -3,7 +3,8 @@
 	"description": "Adds a new item called Argus into the game.",
 	"version": "1.2.1",
 	"author": "Spacetech",
-	"waywardVersion": "2.9.0-beta",
+	"github": "https://github.com/WaywardGame/argus",
+	"waywardVersion": "2.10.0-beta",
 	"file": "out/Argus.js",
 	"languages": [
 		"lang/english"

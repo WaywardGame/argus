@@ -1,7 +1,7 @@
-import { ActionType } from "entity/action/IAction";
-import { ItemType } from "item/IItem";
+import { ActionType } from "game/entity/action/IAction";
+import { ItemType } from "game/item/IItem";
 import Mod from "mod/Mod";
-import Bindable from "newui/input/Bindable";
+import Bindable from "ui/input/Bindable";
 export default class Argus extends Mod {
     static readonly INSTANCE: Argus;
     readonly keyBind: Bindable;

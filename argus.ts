@@ -1,17 +1,17 @@
-import { Action } from "entity/action/Action";
-import { ActionType } from "entity/action/IAction";
-import { DamageType, EntityType } from "entity/IEntity";
-import { EquipType, SkillType } from "entity/IHuman";
+import { Action } from "game/entity/action/Action";
+import { ActionType } from "game/entity/action/IAction";
+import { DamageType, EntityType } from "game/entity/IEntity";
+import { EquipType, SkillType } from "game/entity/IHuman";
 import { RenderSource, UpdateRenderFlag } from "game/IGame";
-import { ItemType, ItemTypeGroup, RecipeLevel } from "item/IItem";
-import Item from "item/Item";
-import { RecipeComponent } from "item/Items";
+import { ItemType, ItemTypeGroup, RecipeLevel } from "game/item/IItem";
+import Item from "game/item/Item";
+import { RecipeComponent } from "game/item/Items";
 import { HookMethod } from "mod/IHookHost";
 import Mod from "mod/Mod";
 import Register, { Registry } from "mod/ModRegistry";
-import Bind from "newui/input/Bind";
-import Bindable from "newui/input/Bindable";
-import { IInput } from "newui/input/IInput";
+import Bind from "ui/input/Bind";
+import Bindable from "ui/input/Bindable";
+import { IInput } from "ui/input/IInput";
 
 export default class Argus extends Mod {
 
