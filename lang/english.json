@@ -12,8 +12,8 @@
 		}
 	},
 	"pluralizationRules": {
-		"pluralRules": {
-			"^argus$": "argii"
-		} 
+		"pluralRules": [
+			["^argus$", "argii"]
+		]
 	}
 }
