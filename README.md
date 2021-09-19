@@ -16,7 +16,7 @@ On Linux: path/to/wayward/install/wayward +mod update .
 Open the folder in Visual Studio Code and build with Ctrl+Shift+B.
 
 ## Steam Workshop
-[http://steamcommunity.com/sharedfiles/filedetails/?id=474819457](http://steamcommunity.com/sharedfiles/filedetails/?id=474819457)
+[https://steamcommunity.com/sharedfiles/filedetails/?id=474819457](https://steamcommunity.com/sharedfiles/filedetails/?id=474819457)
 
 ## Screenshots
 ![Argus](https://raw.githubusercontent.com/WaywardGame/argus/master/mod.png "Argus")
