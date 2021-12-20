@@ -1,17 +1,19 @@
+import { EventBus } from "event/EventBuses";
+import { EventHandler } from "event/EventManager";
 import { Action } from "game/entity/action/Action";
 import { ActionType } from "game/entity/action/IAction";
 import { DamageType, EntityType } from "game/entity/IEntity";
 import { EquipType, SkillType } from "game/entity/IHuman";
-import { RenderSource, UpdateRenderFlag } from "game/IGame";
+import { Game } from "game/Game";
 import { ItemType, ItemTypeGroup, RecipeLevel } from "game/item/IItem";
-import Item from "game/item/Item";
 import { RecipeComponent } from "game/item/Items";
-import { HookMethod } from "mod/IHookHost";
 import Mod from "mod/Mod";
 import Register, { Registry } from "mod/ModRegistry";
+import { RenderSource, UpdateRenderFlag } from "renderer/IRenderer";
 import Bind from "ui/input/Bind";
 import Bindable from "ui/input/Bindable";
 import { IInput } from "ui/input/IInput";
+import { Bound } from "utilities/Decorators";
 
 export default class Argus extends Mod {
 
@@ -24,9 +26,11 @@ export default class Argus extends Mod {
 	@Register.action("SeeAll", new Action()
 		.setUsableBy(EntityType.Player)
 		.setHandler(action => {
-			renderer.setTileScale(0.15);
-			renderer.computeSpritesInViewport();
-			game.updateRender(RenderSource.Mod, UpdateRenderFlag.World);
+			if (renderer) {
+				renderer.worldRenderer.setTileScale(0.15);
+				renderer.computeSpritesInViewport();
+				renderer.updateRender(RenderSource.Mod, UpdateRenderFlag.World);
+			}
 		}))
 	public readonly actionSeeAll: ActionType;
 
@@ -34,8 +38,8 @@ export default class Argus extends Mod {
 		attack: 1,
 		damageType: DamageType.Blunt,
 		equip: EquipType.Held,
-		onEquip: item => Argus.INSTANCE.onEquip(item),
-		onUnequip: item => Argus.INSTANCE.onUnequip(item),
+		onEquip: item => Argus.INSTANCE.onEquip(),
+		onUnequip: item => Argus.INSTANCE.onUnequip(),
 		use: [Registry<Argus>().get("actionSeeAll")],
 		recipe: {
 			components: [
@@ -53,8 +57,8 @@ export default class Argus extends Mod {
 	})
 	public itemArgus: ItemType;
 
-	@Override @HookMethod
-	public onGameStart(isLoadingSave: boolean, playedCount: number): void {
+	@EventHandler(EventBus.Game, "play")
+	public onGameStart(game: Game, isLoadingSave: boolean, playedCount: number): void {
 		if (!isLoadingSave) {
 			// give argus
 			localPlayer.createItemInInventory(this.itemArgus);
@@ -63,21 +67,25 @@ export default class Argus extends Mod {
 
 	@Bind.onDown(Registry<Argus>().get("keyBind"))
 	public onToggleBind() {
-		this[fieldOfView.disabled ? "onUnequip" : "onEquip"](null);
+		this[renderer?.fieldOfView.disabled ? "onUnequip" : "onEquip"]();
 		return true;
 	}
 
 	@Bound
-	private onEquip(item: Item) {
-		fieldOfView.disabled = true;
-		fieldOfView.compute(game.absoluteTime);
-		game.updateView(RenderSource.Mod, true);
+	private onEquip() {
+		if (renderer) {
+			renderer.fieldOfView.disabled = true;
+			renderer.fieldOfView.compute(game.absoluteTime);
+			game.updateView(RenderSource.Mod, true);
+		}
 	}
 
 	@Bound
-	private onUnequip(item: Item) {
-		fieldOfView.disabled = false;
-		fieldOfView.compute(game.absoluteTime);
-		game.updateView(RenderSource.Mod, true);
+	private onUnequip() {
+		if (renderer) {
+			renderer.fieldOfView.disabled = false;
+			renderer.fieldOfView.compute(game.absoluteTime);
+			game.updateView(RenderSource.Mod, true);
+		}
 	}
 }
