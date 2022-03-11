@@ -27,7 +27,7 @@ export default class Argus extends Mod {
 		.setUsableBy(EntityType.Player)
 		.setHandler(action => {
 			if (renderer) {
-				renderer.worldRenderer.setTileScale(0.15);
+				renderer.worldRenderer.setZoom(0.15);
 				renderer.computeSpritesInViewport();
 				renderer.updateRender(RenderSource.Mod, UpdateRenderFlag.World);
 			}
