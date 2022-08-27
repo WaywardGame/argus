@@ -6,7 +6,7 @@ import { DamageType, EntityType } from "game/entity/IEntity";
 import { EquipType, SkillType } from "game/entity/IHuman";
 import { Game } from "game/Game";
 import { ItemType, ItemTypeGroup, RecipeLevel } from "game/item/IItem";
-import { RecipeComponent } from "game/item/Items";
+import { RecipeComponent } from "game/item/ItemDescriptions";
 import Mod from "mod/Mod";
 import Register, { Registry } from "mod/ModRegistry";
 import { RenderSource, UpdateRenderFlag } from "renderer/IRenderer";
