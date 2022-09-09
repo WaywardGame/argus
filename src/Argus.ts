@@ -76,7 +76,7 @@ export default class Argus extends Mod {
 		if (renderer) {
 			renderer.fieldOfView.disabled = true;
 			renderer.fieldOfView.compute(game.absoluteTime);
-			game.updateView(RenderSource.Mod, true);
+			renderers.updateView(RenderSource.Mod, true);
 		}
 	}
 
@@ -85,7 +85,7 @@ export default class Argus extends Mod {
 		if (renderer) {
 			renderer.fieldOfView.disabled = false;
 			renderer.fieldOfView.compute(game.absoluteTime);
-			game.updateView(RenderSource.Mod, true);
+			renderers.updateView(RenderSource.Mod, true);
 		}
 	}
 }
