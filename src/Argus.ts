@@ -24,7 +24,7 @@ export default class Argus extends Mod {
 	public readonly keyBind: Bindable;
 
 	@Register.action("SeeAll", new Action()
-		.setUsableBy(EntityType.Player)
+		.setUsableBy(EntityType.Human)
 		.setHandler(action => {
 			if (renderer) {
 				renderer.worldRenderer.setZoom(0.15);
