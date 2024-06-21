@@ -64,7 +64,7 @@ export default class Argus extends Mod {
 			level: RecipeLevel.Advanced,
 			runeChance: [Deity.Good, 0.01],
 		},
-		disassemble: true,
+		storeDisassemblyItems: true,
 		durability: 500,
 	})
 	public itemArgus: ItemType;
