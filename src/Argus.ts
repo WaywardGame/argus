@@ -1,6 +1,6 @@
 import { EventBus } from "@wayward/game/event/EventBuses";
 import { EventHandler } from "@wayward/game/event/EventManager";
-import { Deity } from "@wayward/game/game/deity/Deity";
+import Deity from "@wayward/game/game/deity/Deity";
 import { Action } from "@wayward/game/game/entity/action/Action";
 import { ActionType } from "@wayward/game/game/entity/action/IAction";
 import { DamageType, EntityType } from "@wayward/game/game/entity/IEntity";
