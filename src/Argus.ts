@@ -2,17 +2,18 @@ import { EventBus } from "@wayward/game/event/EventBuses";
 import { EventHandler } from "@wayward/game/event/EventManager";
 import Deity from "@wayward/game/game/deity/Deity";
 import { Action } from "@wayward/game/game/entity/action/Action";
-import { ActionType } from "@wayward/game/game/entity/action/IAction";
+import type { ActionType } from "@wayward/game/game/entity/action/IAction";
+import { ActionArgument } from "@wayward/game/game/entity/action/IAction";
 import { DamageType, EntityType } from "@wayward/game/game/entity/IEntity";
 import { EquipType, SkillType } from "@wayward/game/game/entity/IHuman";
-import { Game } from "@wayward/game/game/Game";
+import type { Game } from "@wayward/game/game/Game";
 import { ItemType, ItemTypeGroup, RecipeLevel } from "@wayward/game/game/item/IItem";
 import { RecipeComponent } from "@wayward/game/game/item/ItemDescriptions";
 import Mod from "@wayward/game/mod/Mod";
 import Register, { Registry } from "@wayward/game/mod/ModRegistry";
 import { RenderSource, UpdateRenderFlag } from "@wayward/game/renderer/IRenderer";
 import Bind from "@wayward/game/ui/input/Bind";
-import Bindable from "@wayward/game/ui/input/Bindable";
+import type Bindable from "@wayward/game/ui/input/Bindable";
 import { IInput } from "@wayward/game/ui/input/IInput";
 import { Bound } from "@wayward/utilities/Decorators";
 
@@ -24,8 +25,19 @@ export default class Argus extends Mod {
 	@Register.bindable("Toggle", IInput.key("Delete"))
 	public readonly keyBind: Bindable;
 
-	@Register.action("SeeAll", new Action()
+	@Register.action("SeeAll", new Action(ActionArgument.ItemInventory)
 		.setUsableBy(EntityType.Human)
+		.setCanUse((action, item) => {
+			if (!item.description?.use?.includes(Argus.INSTANCE.actionSeeAll)) {
+				return {
+					usable: false,
+				};
+			}
+
+			return {
+				usable: true,
+			};
+		})
 		.setHandler(action => {
 			if (renderer) {
 				renderer.worldRenderer.setZoom(0.15);
