@@ -1,30 +1,21 @@
-/*!
- * Copyright 2011-2023 Unlok
- * https://www.unlok.ca
- *
- * Credits & Thanks:
- * https://www.unlok.ca/credits-thanks/
- *
- * Wayward is a copyrighted and licensed work. Modification and/or distribution of any source files is prohibited. If you wish to modify the game in any way, please refer to the modding guide:
- * https://github.com/WaywardGame/types/wiki
- */
-
-import { EventBus } from "event/EventBuses";
-import { EventHandler } from "event/EventManager";
-import { Action } from "game/entity/action/Action";
-import { ActionType } from "game/entity/action/IAction";
-import { DamageType, EntityType } from "game/entity/IEntity";
-import { EquipType, SkillType } from "game/entity/IHuman";
-import { Game } from "game/Game";
-import { ItemType, ItemTypeGroup, RecipeLevel } from "game/item/IItem";
-import { RecipeComponent } from "game/item/ItemDescriptions";
-import Mod from "mod/Mod";
-import Register, { Registry } from "mod/ModRegistry";
-import { RenderSource, UpdateRenderFlag } from "renderer/IRenderer";
-import Bind from "ui/input/Bind";
-import Bindable from "ui/input/Bindable";
-import { IInput } from "ui/input/IInput";
-import { Bound } from "utilities/Decorators";
+import { EventBus } from "@wayward/game/event/EventBuses";
+import { EventHandler } from "@wayward/game/event/EventManager";
+import Deity from "@wayward/game/game/deity/Deity";
+import { Action } from "@wayward/game/game/entity/action/Action";
+import type { ActionType } from "@wayward/game/game/entity/action/IAction";
+import { ActionArgument } from "@wayward/game/game/entity/action/IAction";
+import { DamageType, EntityType } from "@wayward/game/game/entity/IEntity";
+import { EquipType, SkillType } from "@wayward/game/game/entity/IHuman";
+import type { Game } from "@wayward/game/game/Game";
+import { ItemType, ItemTypeGroup, RecipeLevel } from "@wayward/game/game/item/IItem";
+import { RecipeComponent } from "@wayward/game/game/item/ItemDescriptions";
+import Mod from "@wayward/game/mod/Mod";
+import Register, { Registry } from "@wayward/game/mod/ModRegistry";
+import { RenderSource, UpdateRenderFlag } from "@wayward/game/renderer/IRenderer";
+import Bind from "@wayward/game/ui/input/Bind";
+import type Bindable from "@wayward/game/ui/input/Bindable";
+import { IInput } from "@wayward/game/ui/input/IInput";
+import { Bound } from "@wayward/utilities/Decorators";
 
 export default class Argus extends Mod {
 
@@ -34,8 +25,19 @@ export default class Argus extends Mod {
 	@Register.bindable("Toggle", IInput.key("Delete"))
 	public readonly keyBind: Bindable;
 
-	@Register.action("SeeAll", new Action()
+	@Register.action("SeeAll", new Action(ActionArgument.ItemInventory)
 		.setUsableBy(EntityType.Human)
+		.setCanUse((action, item) => {
+			if (!item.description?.use?.includes(Argus.INSTANCE.actionSeeAll)) {
+				return {
+					usable: false,
+				};
+			}
+
+			return {
+				usable: true,
+			};
+		})
 		.setHandler(action => {
 			if (renderer) {
 				renderer.worldRenderer.setZoom(0.15);
@@ -61,9 +63,9 @@ export default class Argus extends Mod {
 			],
 			skill: SkillType.Tinkering,
 			level: RecipeLevel.Advanced,
-			reputation: 10,
+			runeChance: [Deity.Good, 0.01],
 		},
-		disassemble: true,
+		storeDisassemblyItems: true,
 		durability: 500,
 	})
 	public itemArgus: ItemType;
@@ -77,13 +79,13 @@ export default class Argus extends Mod {
 	}
 
 	@Bind.onDown(Registry<Argus>().get("keyBind"))
-	public onToggleBind() {
+	public onToggleBind(): boolean {
 		this[renderer?.fieldOfView.disabled ? "onUnequip" : "onEquip"]();
 		return true;
 	}
 
 	@Bound
-	private onEquip() {
+	private onEquip(): void {
 		if (renderer) {
 			renderer.fieldOfView.disabled = true;
 			renderer.fieldOfView.compute(game.absoluteTime);
@@ -92,7 +94,7 @@ export default class Argus extends Mod {
 	}
 
 	@Bound
-	private onUnequip() {
+	private onUnequip(): void {
 		if (renderer) {
 			renderer.fieldOfView.disabled = false;
 			renderer.fieldOfView.compute(game.absoluteTime);
