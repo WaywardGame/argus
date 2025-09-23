@@ -4,7 +4,7 @@
 	"version": "1.2.2",
 	"author": "Spacetech",
 	"github": "https://github.com/WaywardGame/argus",
-	"waywardVersion": "2.14.0-beta",
+	"waywardVersion": "2.15.0-beta",
 	"file": "out/Argus.js",
 	"languages": [
 		"lang/english"
